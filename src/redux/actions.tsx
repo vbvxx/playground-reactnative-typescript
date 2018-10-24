@@ -2,6 +2,7 @@ import { Action } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { RootState, RootActions } from "./store";
 
+// Actions interface
 type ThunkResult<R> = ThunkAction<R, RootState, undefined, RootActions>;
 
 export enum TestActionTypes {
@@ -14,20 +15,18 @@ export interface SyncAction extends Action {
   text: string;
 }
 
-export function testGetState(): ThunkResult<void> {
-  return (dispatch, getState) => {
-    dispatch(syncActionCreator("ASYNC"));
-  };
+export interface AsyncAction extends Action {
+  type: TestActionTypes.THUNK_ACTION;
 }
 
-export type IActions = SyncAction;
+export type IActions = SyncAction | AsyncAction;
 
-// export function thunkActionCreator() {
-//   return function(dispatch: Dispatch<any>) {
-//     dispatch({ type: TestAction.THUNK_ACTION });
-//   };
-
-//dispatch: Dispatch<IActions>
+// Actions creators
+export function testGetState(): ThunkResult<void> {
+  return (dispatch, getState) => {
+    dispatch({ type: TestActionTypes.THUNK_ACTION });
+  };
+}
 
 export const syncActionCreator = (text: string): SyncAction => {
   return { type: TestActionTypes.SYNC_ACTION, text: text };
